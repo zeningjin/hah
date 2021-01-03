@@ -1,0 +1,18 @@
+.icon_wrong{
+    display: inline-block;
+    position: relative;
+    top: 7px;
+    /*padding-top: 14px;*/
+    width: 16px;
+    height: 16px;
+    background: url(../../images/icon_20150706.png) 0 -40px no-repeat;
+    background-position: 0 -20px;
+}
+.icon_yes{
+    display: inline-block;
+    position: relative;
+    top: 7px;
+    width: 16px;
+    height: 16px;
+    background: url(../../images/icon_20150706.png) 0 -40px no-repeat;
+}

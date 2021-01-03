@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+{% load static %}
+<head>
+    <base href="" />
+    <title>百知教育</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="ddclick_guan" content="1" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/category_pub.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/header_150803.css' %}"/>
+
+    <script type="text/javascript" src="{% static 'js/tab.js' %}"></script>
+    <script type="text/javascript">
+    function player1(id){
+    var id=document.getElementById(id)
+    id.style.display="block";
+    }
+    function clocer1(id){
+    var id=document.getElementById(id)
+    id.style.display="none";
+    }
+    </script>
+    <script type="text/javascript" src="http://www.yuloo.com/js/jquery1.4.2.js"></script>
+    <script  type="text/javascript">
+        var firstbyteTime=new Date().getTime();
+        var firstScreenStartTime=new Date().getTime();
+        var mix_imglist=[];
+    </script>
+</head>
+<body>
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<div id="bd_auto" style="margin: 0; width: 990px" name="9149">
+              <!--横栏，排序选项-->
+              <div class="col article">
+
+    <div class="bk_sort" name="Sort">
+                  <div id="component_281329"></div>
+                  <div class="con tools_box">
+        <div class="con top">
+        <div class="col ">
+            <div class="t">排序：</div>
+            <ul class="sorting_box" name="Sort">
+                <li class="on">
+                    <div onclick="gotom(0,0)" title="默认排序" name="Mo" >默认排序</div>
+                </li>
+                <li class="">
+                    <div name="Xl" onclick="gotom(1,0)" title="销量由高到低">销量<span class="icon"></span></div>
+                </li>
+                <li class="">
+                    <div name="Jg" onclick="gotom(2,1)" title="价格由低到高">价格<span class="icon icon_t"></span></div>
+                </li>
+                <li class="">
+                    <div name="OT" onclick="gotom(3,0)" title="出版时间由近到远">出版时间<span class="icon"></span></div>
+                </li>
+            </ul>
+            <script type="text/javascript">
+                // 清除原有的选中样式
+                $sorting_box = $('.sorting_box>li');
+                $sorting_box.each(function (index, ele) {
+                    if($(ele).hasClass('on')){
+                        $(ele).removeClass('on')
+                    }
+                    if(index === parseInt('{{ sort_type }}')){
+                        $(ele).addClass('on')
+                    }
+                });
+            </script>
+            <!--下拉列表选择-->
+            <!--这里的点击事件，可以设置成触发上面对应的点击事件-->
+            <div class="select_box" name="Xl"><span class="d">默认排序</span><span onclick="show_select()" class="arrow"></span>
+                <div class="select_pop" style="display: none;">
+                    <ul>
+                        <li class="on"><a name="Mo" href="javascript:void(0);" onclick="gotom(0,0)">默认排序</a></li>
+                        <li class=""><a name="Xl" href="javascript:void(0);" onclick="gotom(1,0)">按销量降序<span class="up"></span></a></li>
+                        <li class=""><a name="Jg" href="javascript:void(0);" onclick="gotom(2,1)">按价格升序<span class="down"></span></a></li>
+                        <li class=""><a name="Jg" href="javascript:void(0);" onclick="gotom(2,0)">按价格降序<span class="up"></span></a></li>
+
+                        <li class=""><a name="OT" href="javascript:void(0);" onclick="gotom(3,0)">出版时间降序<span class="up"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <script>
+                function show_select(){
+                    $select_pop = $('.select_pop');
+                    $select_pop.attr('style','display: block;')
+                }
+            </script>
+            <!--排序规则-->
+            <script type="text/javascript">
+                // 排序方式，
+                // cur_ele ：当前标签
+                // sort_type : 排序类型  0：默认，数据库中排序（添加时间） 1:按销量 2：按价格 3：按出版时间
+                // sort_order ：排序顺序  0：降序  1：升序
+                function gotom(sort_type,sort_order){
+                    location.href = "{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count=1&sort_type="
+                        + sort_type + '&sort_order=' + sort_order;
+                }
+            </script>
+        </div>
+          <div class="col ">
+            <!--<div class="t_s">价格：</div>
+<div class="interval" id="prices" name="Jgsx">
+    <div class="inner">
+        <input type='text' class='text' value='' name='low_price' id='input_lowp'/>-<input type='text' class='text' value='' name='high_price' id='input_highp'/>        <div><input type="button" class="button" value="清除" id="btn_cls" name="Price"/><input type="button" class="button btn_yes " value="确定" id="btn_yes" name="Price" /></div>
+    </div>
+</div>-->
+
+          </div>
+          <div class="col ">
+            <div class="data" name="Fy">
+                共<span>{{ per_page.paginator.count }}</span>个商品
+                <!--上一页-->
+                {% if per_page.has_previous %}
+                    <a class="arrow_l arrow_l_on" href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ per_page.previous_page_number }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}"></a>
+                {% else %}
+                    <a class="arrow_l"></a>
+                {% endif %}
+                <span class="or">{{ per_page.number }}</span>
+                <span>/{{ per_page.paginator.num_pages }}</span>
+                <!--下一页-->
+                {% if per_page.has_next %}
+                    <a class="arrow_r arrow_r_on" href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ per_page.next_page_number }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}"></a>
+                {% else %}
+                    <a class="arrow_r"></a>
+                {% endif %}
+
+            </div>
+          </div>
+                    </div>
+
+      </div>
+                </div>
+  </div>
+
+              <!--书籍列表-->
+              <div class="book_shoplist" dd_utopia="on" name="Product">
+    <div id="component_2963524"></div>
+    <div class="con shoplist">
+
+
+    <!--书籍展示列表-->
+      <ul class="list_aa listimg" id="component_0__0__3058">
+          {% for per_book in per_page.object_list %}
+          <li class="line1" id="23668351">
+            <div class="inner">
+                <a title="{{per_book.book_name}}" class="pic" href="{% url 'dataapp:bookdetail' %}?book_id={{ per_book.id }}" target="_blank"><img src="{% static per_book.book_cover %}" alt="{{per_book.book_name}}"></a>
+                <p class="name"><a title="{{per_book.book_name}}" href="{% url 'dataapp:bookdetail' %}?book_id={{ per_book.id }}" target="_blank">{{per_book.book_name}}</a></p>
+                <p class="star"><span class="level"><span style="width: 100%;"></span></span>
+                    <a href="#" target="_blank" name="P_pl">评论数：{{per_book.comment_count}}</a>
+                    <a href="javascript:void(0);">销量：{{ per_book.sale_count }}</a>
+                </p>
+                <div class="publisher_info">
+                    <p class="author"><span></span><a href="#" name="P_zz" title="{{per_book.author}}">{{per_book.author}}</a></p>
+                    <p class="publishing_time"><span></span>/{{per_book.publishing_time|date:'Y-m-d'}}</p>
+                    <p class="publishing"><span></span>/ <a href="#" name="P_cbs" title="{{per_book.publishing_house}}">{{per_book.publishing_house}}</a></p>
+                </div>
+                <p class="detail"> <span style="color: blue;">详情：</span> {{ per_book.content_intro }}</p>
+                <p class="dang" style="display: block;">当当自营</p>
+                <p class="buy_button"><a class="listbtn_info" name="area_buy" target="_blank" dd_name="查看详情" href="{% url 'dataapp:bookdetail' %}?book_id={{ per_book.id }}" >查看详情</a></p>
+{#                <p class="buy_button"><a class="listbtn_info" name="area_buy" dd_name="查看详情" href="javascript:goto_product(23668351)" >查看详情</a></p>#}
+                <p class="price">
+                    <span class="price_n">￥{{ per_book.d_price }}</span>
+                    <a style="color: #878787;text-decoration:none;">定价：</a>
+                    <span class="price_r">￥{{ per_book.price }}</span>
+                    (<span class="price_s">
+                        {% widthratio per_book.d_price per_book.price 1000%}
+                    </span>折)
+                </p>
+                <div class="ebook_buy">
+                              <p class="buy_button"><a class="listbtn_buy" name="{{ per_book.id }}" id="A13" dd_name="加入购物车" href="javascript:void(0);" name="Buy"></a></p>
+                               </div>
+                <p class="subtitle"> （一个App人气冠军张皓宸全新个人故事集，温馨治愈的情感故事，让你在面对爱时无惧，怀疑爱时坚定。随书附赠张皓宸私密手写寄语明信片） </p>
+            </div>
+          </li>
+          {% endfor %}
+          <!--添加商品到购物车-->
+          <script>
+              $listbtn_buy = $('.listbtn_buy');
+              $listbtn_buy.each(function (index, ele) {
+                  $(ele).click(function () {
+                      $.ajax({
+                          type: "POST",
+                          url: "{% url 'businessapp:add_item' %}",
+                          data: "book_id=" + $(this).attr('name') + "&book_num=1&csrfmiddlewaretoken=" + "{{ csrf_token }}",
+                          success:function (rst) {
+                              if(rst['state'] === 'ok'){
+                                  alert('恭喜您，你心爱的商品成功添加到购物车')
+                              }
+                          }
+                      })
+                  })
+              })
+          </script>
+          <!--修改折扣价格-->
+          <script>
+              $price_s = $('.price_s');
+              $price_s.each(function () {
+                  cur_value = $(this).html();
+                  $(this).html(cur_value/100)
+              })
+          </script>
+
+      </ul>
+                </div>
+                <div class="" name="m2963520_pid0_t3989">
+                    <div id="component_2963520"></div>
+                    <div class="con paginating" name="m2963520_pid0_t3990">
+                        <script type="text/javascript" src="{% static 'js/jquery/lazyload181.js' %}"></script>
+                        <script type="text/javascript"> $("img[data-original]").lazyload(); </script>
+                        <iframe src="" frameborder="0"></iframe>
+        <ul class="paging" name="Fy">
+            <!--上一页-->
+            {% if per_page.has_previous %}
+                <li class="prev"><a href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ per_page.previous_page_number }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}">上一页</a></li>
+            {% else %}
+                <li class="prev none"><a href="#">上一页</a></li>
+            {% endif %}
+
+            <!--前面是否有分页-->
+            <li class="pre_page" style="display: none"><span>...<span></span></span></li>
+            <!--每一页-->
+            {% for page_count in per_page.paginator.page_range %}
+                {% if page_count == per_page.number and page_count >= per_page.number|add:'-3' and page_count <= per_page.number|add:'3' %}
+                    <li><a name="cur_page" href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ page_count }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}" class="current">{{ page_count }}</a></li>
+                {% elif page_count >= per_page.number|add:'-3' and page_count <= per_page.number|add:'3'  %}
+                    <li><a name="cur_page" href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ page_count }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}" class="null">{{ page_count }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <!--后续是否有分页-->
+            <li class="last_page" style="display: none"><span>...<span></span></span></li>
+            <!--实现中心页码左右最多三个页码-->
+            <script>
+                // 获取页码第一个标号
+                $cur_page_first = $('a[name="cur_page"]:first');
+                // 获取页码最后一个标号
+                $cur_page_last = $('a[name="cur_page"]:last');
+                if($cur_page_first.html() > 1){
+                    $pre_page = $('.pre_page');
+                    $pre_page.attr('style', 'display: block');
+                }
+                if($cur_page_last.html() < {{ per_page.paginator.num_pages }}){
+                    $pre_page = $('.last_page');
+                    $pre_page.attr('style', 'display: block');
+                }
+            </script>
+            <!--下一页-->
+            {% if per_page.has_next %}
+                <li class="next"><a href="{% url 'dataapp:iframe_booklist' %}?type_id={{ type_id }}&page_count={{ per_page.next_page_number }}&sort_type={{ sort_type }}&sort_order={{ sort_order }}">下一页</a></li>
+            {% else %}
+                <li class="next none"><a href="#">下一页</a></li>
+            {% endif %}
+            <li class="page_input"><span>共{{ per_page.paginator.num_pages }}页 到第</span>
+            <input style="text-align: center;" id="t__cp" type="text" class="number" value="{{per_page.number}}">
+            <span>页</span>
+            <input class="button" id="click_get_page" value="确定" type="button"></li>
+            <!--用来实现输入页码跳转到指定页面-->
+            <script>
+                $(document).ready(
+                    function(){
+                        var $submit_page = $('#click_get_page');
+                        $submit_page.click(
+                            function() {
+                                // 获取用户输入的页码
+                                page_count = $('#t__cp').val();
+                                // 获取所有的页号
+                                var all_page = [];
+                                {% for i in per_page.paginator.page_range %}
+                                    all_page.push({{i}});
+                                {% endfor %}
+                                //console.log(all_page);
+                                //console.log(7 in all_page);
+                                //console.log(6 in all_page);
+                                //console.log(0 in all_page);
+                                // 判断是否有对应的页号(in方法判断的是索引)
+                                if(parseInt(page_count)-1 in all_page){
+                                    url = "{% url 'dataapp:iframe_booklist' %}" + '?type_id={{type_id}}' + '&page_count=' + page_count + '&sort_type={{ sort_type }}&sort_order={{ sort_order }}';
+                                    location.href = url;
+                                }else{
+                                    // 没有对应的页号给出错误提示
+                                    alert('请输入正确的页数')
+                                }
+                            }
+                        )
+                    }
+                )
+            </script>
+        </ul>
+
+</div></div>
+  </div>
+
+</div>
+
+
+<script src="{% static 'js/pagetop2015_0827.js' %}" charset="gb2312" type="text/javascript"></script>
+<script src="{% static 'js/slider.js' %}"></script>
+<script type="text/javascript">
+$(function() {
+	var bannerSlider = new Slider($('#banner_tabs'), {
+		time: 5000,
+		delay: 400,
+		event: 'hover',
+		auto: true,
+		mode: 'fade',
+		controller: $('#bannerCtrl'),
+		activeControllerCls: 'active'
+	});
+	$('#banner_tabs .flex-prev').click(function() {
+		bannerSlider.prev()
+	});
+	$('#banner_tabs .flex-next').click(function() {
+		bannerSlider.next()
+	});
+})
+</script>
+</body>
+</html>
